@@ -1,16 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent (typeof(Rigidbody))] [RequireComponent(typeof(SphereCollider))]
+
+
 public class BulletScript : MonoBehaviour {
 
+    Rigidbody rb;
+    float force = 100.0f;
 
-	// Use this for initialization
-	void Start () {
+    void Start()
+    {
+       rb = GetComponent<Rigidbody>();
+    }
+
+    void FixedUpdate()
+    {
+        rb.AddForce(transform.right*force);
+    }
+
 	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

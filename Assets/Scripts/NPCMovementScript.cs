@@ -5,7 +5,7 @@ public class NPCMovementScript : MonoBehaviour {
 
     public float moveSpeed = 5.0f;
     public bool hostile = true;
-    GameObject player;
+    public GameObject player;
     public float distance;
 
 
@@ -34,7 +34,6 @@ public class NPCMovementScript : MonoBehaviour {
     void Move()
     {
         distance = Vector3.Distance(player.transform.position,transform.position);
-        Debug.Log(distance.ToString());
 
         float step = moveSpeed * Time.deltaTime;
         //TEMP CODE |||| REPLACE WITH STEERING BEHAVIOURS
