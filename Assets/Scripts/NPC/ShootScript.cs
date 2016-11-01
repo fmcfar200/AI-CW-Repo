@@ -16,10 +16,12 @@ public class ShootScript : MonoBehaviour {
     float fireRate = 0.5f;
     float nextFire = 0.0f;
 
+    float bulletForce = 100.0f;
+
 
     public GameObject bulletPrefab;
     public GameObject bulletSpawn;
-
+    GameObject firedBullet;
     public Text ammoText;
    
 
@@ -60,6 +62,11 @@ public class ShootScript : MonoBehaviour {
 	
 	}
 
+    void FixedUpdate()
+    {
+        firedBullet.GetComponent<BulletScript>().ApplyForce(this.gameObject, bulletForce);
+    }
+
     void AimAtPlayer()
     {
         gameObject.transform.LookAt(npcMovementScript.player.transform.position);
@@ -67,7 +74,8 @@ public class ShootScript : MonoBehaviour {
 
     void Shoot()
     {
-       Instantiate(bulletPrefab, bulletSpawn.transform.position, Quaternion.identity);
+        firedBullet = Instantiate(bulletPrefab, bulletSpawn.transform.position, Quaternion.identity) as GameObject;
+        firedBullet.name = "Bullet";
        currentClip--;
     }
 

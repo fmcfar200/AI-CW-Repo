@@ -12,6 +12,7 @@ public class NPCMovementScript : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        hostile = false;
         player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
         {
@@ -22,14 +23,27 @@ public class NPCMovementScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+       
+	
+	}
+
+    void FixedUpdate()
+    {
         if (hostile)
         {
             //move towards player
             Move();
 
         }
-	
-	}
+    }
+
+    void OnTriggerEnter(Collider coll)
+    {
+        if (coll.gameObject.tag == "Player")
+        {
+            hostile = true;
+        }
+    }
 
     void Move()
     {
