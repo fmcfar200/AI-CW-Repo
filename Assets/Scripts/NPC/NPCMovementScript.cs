@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+
 
 public class NPCMovementScript : MonoBehaviour {
 
@@ -7,6 +9,8 @@ public class NPCMovementScript : MonoBehaviour {
     public bool hostile = true;
     public GameObject player;
     public float distance;
+
+    public Text distanceText;
 
 
     // Use this for initialization
@@ -23,7 +27,7 @@ public class NPCMovementScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-       
+        distanceText.text = "Distance: " + distance.ToString();
 	
 	}
 
