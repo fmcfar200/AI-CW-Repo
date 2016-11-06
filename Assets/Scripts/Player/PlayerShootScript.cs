@@ -5,9 +5,7 @@ public class PlayerShootScript : MonoBehaviour {
 
 
     public Texture2D crossHair;
-    public GameObject bulletSpawn;
-    public GameObject bulletPrefab;
-    float bulletForce =100.0f;
+    
 
     GameObject firedBullet;
 	// Use this for initialization
@@ -20,16 +18,19 @@ public class PlayerShootScript : MonoBehaviour {
 
         if (Input.GetButtonDown("Fire1"))
         {
-            firedBullet = Instantiate(bulletPrefab, bulletSpawn.transform.position, Quaternion.identity) as GameObject;
-            firedBullet.name = "Bullet";
+            Ray ray = Camera.main.ViewportPointToRay( new Vector3(0.5f, 0.5f, 0f));
+            RaycastHit hit;
+            Physics.Raycast(ray, out hit);
+            if (hit.collider.tag == "Enemy")
+            {
+                hit.collider.GetComponent<Health>().TakeDamage(15);
+            }
+         
+           
         }
 	
 	}
-    void FixedUpdate()
-    {
-        firedBullet.GetComponent<BulletScript>().ApplyForce(this.gameObject, bulletForce);
-
-    }
+    
 
     void OnGUI()
     {
