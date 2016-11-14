@@ -10,6 +10,8 @@ public class NPCMovementScript : MonoBehaviour {
     public GameObject player;
     public float distance;
 
+    UtilityAIScript utilityAI;
+
     public Text distanceText;
 
 
@@ -22,6 +24,8 @@ public class NPCMovementScript : MonoBehaviour {
         {
             Debug.LogError("PLAYER NOT FOUND!");
         }
+
+        utilityAI = GetComponent<UtilityAIScript>();
 	}
 	
 	// Update is called once per frame
@@ -29,6 +33,11 @@ public class NPCMovementScript : MonoBehaviour {
         distance = Vector3.Distance(player.transform.position, transform.position);
 
         distanceText.text = "Distance: " + distance.ToString();
+
+        if (utilityAI.anxiety >= 0.01f)
+        {
+            hostile = true;
+        }
 	
 	}
 
@@ -42,6 +51,7 @@ public class NPCMovementScript : MonoBehaviour {
         }
     }
 
+    /*
     void OnTriggerEnter(Collider coll)
     {
         if (coll.gameObject.tag == "Player")
@@ -49,7 +59,7 @@ public class NPCMovementScript : MonoBehaviour {
             hostile = true;
         }
     }
-
+    */
     void Move()
     {
 

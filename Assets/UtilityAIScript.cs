@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class UtilityAIScript : MonoBehaviour {
 
     GameObject enemyObj;
     NPCMovementScript movementScript;
     float distance;
-    float anxiety;
+    public float anxiety;
+    public Text anxietyTextObj;
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +31,9 @@ public class UtilityAIScript : MonoBehaviour {
     void CalculateAnxiety(float distance)
     {
         anxiety = 1 / (1 + Mathf.Pow(distance + 40, 2.718f*0.45f));
-        Debug.Log("Anxiety: " + anxiety.ToString());
+        anxietyTextObj.text = "Anxiety: " + anxiety;
+        //Debug.Log("Anxiety: " + anxiety.ToString()+ " at Distance " + distance.ToString() );
+
+
     }
 }
