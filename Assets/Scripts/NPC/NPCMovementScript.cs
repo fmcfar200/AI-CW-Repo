@@ -26,6 +26,7 @@ public class NPCMovementScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        distance = Vector3.Distance(player.transform.position, transform.position);
 
         distanceText.text = "Distance: " + distance.ToString();
 	
@@ -51,7 +52,6 @@ public class NPCMovementScript : MonoBehaviour {
 
     void Move()
     {
-        distance = Vector3.Distance(player.transform.position,transform.position);
 
         float step = moveSpeed * Time.deltaTime;
         //TEMP CODE |||| REPLACE WITH STEERING BEHAVIOURS

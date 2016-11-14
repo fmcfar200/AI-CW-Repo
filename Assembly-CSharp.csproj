@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\NPC\NPCMovementScript.cs" />
      <Compile Include="Assets\Scripts\NPC\ShootScript.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerShootScript.cs" />
+     <Compile Include="Assets\UtilityAIScript.cs" />
      <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
