@@ -31,10 +31,11 @@ public class NPCMovementScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         distance = Vector3.Distance(player.transform.position, transform.position);
-
+        distance = Mathf.RoundToInt(distance);
         distanceText.text = "Distance: " + distance.ToString();
 
-        if (utilityAI.anxiety >= 0.01f)
+        //CODE MAY BE MOVED TO UTILITYSCRIPT
+        if (utilityAI.anxiety >= 1.0f)
         {
             hostile = true;
         }

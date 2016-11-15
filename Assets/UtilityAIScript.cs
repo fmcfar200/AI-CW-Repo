@@ -6,8 +6,12 @@ public class UtilityAIScript : MonoBehaviour {
 
     GameObject enemyObj;
     NPCMovementScript movementScript;
+
     float distance;
     public float anxiety;
+
+
+
     public Text anxietyTextObj;
 
 	// Use this for initialization
@@ -30,7 +34,8 @@ public class UtilityAIScript : MonoBehaviour {
 
     void CalculateAnxiety(float distance)
     {
-        anxiety = 1 / (1 + Mathf.Pow(distance + 40, 2.718f*0.45f));
+        anxiety = (1 / (1 + Mathf.Pow(distance, 2.7f*0.45f))) * 10;
+        anxiety = Mathf.Clamp(anxiety, 0.0f, 1.0f);
         anxietyTextObj.text = "Anxiety: " + anxiety;
         //Debug.Log("Anxiety: " + anxiety.ToString()+ " at Distance " + distance.ToString() );
 
