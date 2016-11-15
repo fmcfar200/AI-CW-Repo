@@ -24,6 +24,7 @@ public class PlayerShootScript : MonoBehaviour {
             if (hit.collider.tag == "Enemy")
             {
                 hit.collider.GetComponent<Health>().TakeDamage(15);
+                hit.collider.GetComponent<NPCMovementScript>().hostile = true;
             }
          
            

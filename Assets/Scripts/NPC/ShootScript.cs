@@ -7,7 +7,7 @@ public class ShootScript : MonoBehaviour {
 
     protected NPCMovementScript npcMovementScript;
 
-    int currentClip;
+    public int currentClip;
     int currentAmmo;
 
     int maxClip = 16;
@@ -64,7 +64,10 @@ public class ShootScript : MonoBehaviour {
 
     void FixedUpdate()
     {
-        firedBullet.GetComponent<BulletScript>().ApplyForce(this.gameObject, bulletForce);
+        if (firedBullet != null)
+        {
+            firedBullet.GetComponent<BulletScript>().ApplyForce(this.gameObject, bulletForce);
+        }
     }
 
     void AimAtPlayer()

@@ -6,13 +6,17 @@ public class UtilityAIScript : MonoBehaviour {
 
     GameObject enemyObj;
     NPCMovementScript movementScript;
+    ShootScript shootScript;
 
     float distance;
+    int currentClip;
     public float anxiety;
+    public float reload;
 
 
 
     public Text anxietyTextObj;
+    public Text reloadTextObj;
 
 	// Use this for initialization
 	void Start () {
@@ -20,6 +24,7 @@ public class UtilityAIScript : MonoBehaviour {
         if (enemyObj != null)
         {
             movementScript = enemyObj.GetComponent<NPCMovementScript>();
+            shootScript = enemyObj.GetComponent<ShootScript>();
         }
 	
 	}
@@ -28,7 +33,10 @@ public class UtilityAIScript : MonoBehaviour {
 	void Update () {
 
         distance = movementScript.distance;
+        currentClip = shootScript.currentClip;
+
         CalculateAnxiety(distance);
+        CalculateReload(currentClip);
 
     }
 
@@ -39,6 +47,11 @@ public class UtilityAIScript : MonoBehaviour {
         anxietyTextObj.text = "Anxiety: " + anxiety;
         //Debug.Log("Anxiety: " + anxiety.ToString()+ " at Distance " + distance.ToString() );
 
-
+    }
+    void CalculateReload(int currentClip)
+    {
+        reload = (1 / (1 + Mathf.Pow(currentClip, 4.0f * 0.45f))) * 10;
+        reload = Mathf.Clamp(reload, 0.0f, 1.0f);
+        reloadTextObj.text = "Reload: " + reload;
     }
 }
