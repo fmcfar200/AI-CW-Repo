@@ -35,7 +35,7 @@ public class NPCMovementScript : MonoBehaviour {
         distanceText.text = "Distance: " + distance.ToString();
 
         //CODE MAY BE MOVED TO UTILITYSCRIPT
-        if (utilityAI.anxiety >= 1.0f)
+        if (utilityAI.anxietyU >= 1.0f)
         {
             hostile = true;
         }
