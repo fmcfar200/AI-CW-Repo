@@ -23,6 +23,10 @@ public class ShootScript : MonoBehaviour {
     public GameObject bulletSpawn;
     GameObject firedBullet;
     public Text ammoText;
+
+    float attackTimer;
+    float cooldownTime;
+    bool coolingDown;
    
 
 
@@ -34,6 +38,8 @@ public class ShootScript : MonoBehaviour {
         currentClip = maxClip;
         currentAmmo = maxAmmo;
 
+        cooldownTime = 4.0f;
+
         //TEMP
         GetComponent<Rigidbody>().isKinematic = true;
 	}
@@ -41,20 +47,19 @@ public class ShootScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        Debug.Log(attackTimer.ToString());
         if (npcMovementScript.hostile != false)
         {
-            AimAtPlayer();
-            if (Time.time > nextFire && currentClip > 0)
+            if (attackTimer < 5.0f)
             {
-                nextFire = Time.time + fireRate;
-                Shoot();
+                Attack();
             }
-
-            if (currentClip == 0 && currentAmmo > 0)
+            else
             {
-                Reload();
-            }
+                coolingDown = true;
+                StartCoroutine(Cooldown());
 
+            }
         }
 
         ammoText.text = "Enemy Ammo Count: " + currentClip.ToString() + "/" + currentAmmo.ToString();
@@ -82,6 +87,23 @@ public class ShootScript : MonoBehaviour {
        currentClip--;
     }
 
+    void Attack()
+    {
+        attackTimer += Time.deltaTime;
+        
+        AimAtPlayer();
+        if (Time.time > nextFire && currentClip > 0)
+        {
+            nextFire = Time.time + fireRate;
+            Shoot();
+        }
+
+        if (currentClip == 0 && currentAmmo > 0)
+        {
+            Reload();
+        }
+    }
+
     void Reload()
     {
        if (currentClip < maxClip && maxAmmo > 0)
@@ -89,5 +111,12 @@ public class ShootScript : MonoBehaviour {
             currentClip = maxClip;
             currentAmmo--;
         }
+    }
+
+    IEnumerator Cooldown()
+    {
+        yield return new WaitForSeconds(2.0f);
+        attackTimer = 0;
+        coolingDown = false;
     }
 }

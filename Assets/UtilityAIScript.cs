@@ -73,4 +73,6 @@ public class UtilityAIScript : MonoBehaviour {
         Debug.Log("Health Utility: " + healthU.ToString()+ " at Health Value " + currentHealth.ToString() );
 
     }
+
+
 }
