@@ -44,12 +44,7 @@ public class NPCMovementScript : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (hostile)
-        {
-            //move towards player
-            Move();
-
-        }
+       
     }
 
     /*
@@ -61,7 +56,7 @@ public class NPCMovementScript : MonoBehaviour {
         }
     }
     */
-    void Move()
+    public void MoveTowards()
     {
 
         float step = moveSpeed * Time.deltaTime;
@@ -74,4 +69,19 @@ public class NPCMovementScript : MonoBehaviour {
        
        
     }
+
+    /*
+    public void FallBack()
+    {
+        float step = moveSpeed * Time.deltaTime;
+        //TEMP CODE |||| REPLACE WITH STEERING BEHAVIOURS
+        if (distance < 10.0f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, -step);
+            float yValue = transform.position.y;
+            yValue = Mathf.Clamp(transform.position.y, 5.7f, 5.7f);
+
+        }
+    }
+    */
 }

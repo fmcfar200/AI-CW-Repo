@@ -6,7 +6,7 @@ public class ShootScript : MonoBehaviour {
 
 
     protected NPCMovementScript npcMovementScript;
-
+    UtilityAIScript utilityScript;
     public int currentClip;
     int currentAmmo;
 
@@ -24,9 +24,8 @@ public class ShootScript : MonoBehaviour {
     GameObject firedBullet;
     public Text ammoText;
 
-    float attackTimer;
-    float cooldownTime;
-    bool coolingDown;
+    public float attackTimer;
+    
    
 
 
@@ -34,11 +33,11 @@ public class ShootScript : MonoBehaviour {
 	void Start ()
     {
         npcMovementScript = this.gameObject.GetComponent<NPCMovementScript>();
-        
+        utilityScript = this.gameObject.GetComponent<UtilityAIScript>();
         currentClip = maxClip;
         currentAmmo = maxAmmo;
 
-        cooldownTime = 4.0f;
+        utilityScript.cooldownTime = 4.0f;
 
         //TEMP
         GetComponent<Rigidbody>().isKinematic = true;
@@ -56,8 +55,8 @@ public class ShootScript : MonoBehaviour {
             }
             else
             {
-                coolingDown = true;
-                StartCoroutine(Cooldown());
+                utilityScript.coolingDown = true;
+                StartCoroutine(utilityScript.Cooldown());
 
             }
         }
@@ -92,31 +91,26 @@ public class ShootScript : MonoBehaviour {
         attackTimer += Time.deltaTime;
         
         AimAtPlayer();
+        npcMovementScript.MoveTowards();
         if (Time.time > nextFire && currentClip > 0)
         {
             nextFire = Time.time + fireRate;
             Shoot();
         }
+          
+    }
 
-        if (currentClip == 0 && currentAmmo > 0)
+    public void Reload()
+    {
+        if (currentAmmo > 0)
         {
-            Reload();
+            if (currentClip < maxClip && maxAmmo > 0)
+            {
+                currentClip = maxClip;
+                currentAmmo--;
+            }
         }
     }
 
-    void Reload()
-    {
-       if (currentClip < maxClip && maxAmmo > 0)
-        {
-            currentClip = maxClip;
-            currentAmmo--;
-        }
-    }
-
-    IEnumerator Cooldown()
-    {
-        yield return new WaitForSeconds(2.0f);
-        attackTimer = 0;
-        coolingDown = false;
-    }
+   
 }

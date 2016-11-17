@@ -26,8 +26,12 @@ public class UtilityAIScript : MonoBehaviour {
     public Text reloadTextObj;
     public Text healthTextObj;
 
-	// Use this for initialization
-	void Start () {
+
+    public float cooldownTime;
+    public bool coolingDown;
+
+    // Use this for initialization
+    void Start () {
         enemyObj = GameObject.Find("Enemy");
         if (enemyObj != null)
         {
@@ -45,9 +49,12 @@ public class UtilityAIScript : MonoBehaviour {
         currentClip = shootScript.currentClip;
         currentHealth = healthScript.health;
 
-        CalculateAnxiety(distance);
-        CalculateReload(currentClip);
-        CalculateHealth(currentHealth);
+        CalculateUtilities();
+
+        if (coolingDown == true)
+        {
+            MakeDecision(healthU,reloadU);
+        }
 
     }
 
@@ -67,11 +74,49 @@ public class UtilityAIScript : MonoBehaviour {
     }
     void CalculateHealth(int currenHealth)
     {
-        healthU = (1 / (1 + Mathf.Pow(currentHealth, 1.5f * 0.45f))) * 10;
+        healthU = (1 / (1 + Mathf.Pow(currentHealth, 1.5f * 0.65f))) * 10;
         healthU = Mathf.Clamp(healthU, 0.0f, 1.0f);
         healthTextObj.text = "Health: " + healthU;
         Debug.Log("Health Utility: " + healthU.ToString()+ " at Health Value " + currentHealth.ToString() );
 
+    }
+
+    void CalculateUtilities()
+    {
+        CalculateAnxiety(distance);
+        CalculateReload(currentClip);
+        CalculateHealth(currentHealth);
+    }
+
+    void MakeDecision(float healthU, float reloadU)
+    {
+        if (healthU > reloadU )
+        {
+            healthScript.Heal();
+        }
+        else if (reloadU > healthU)
+        {
+            shootScript.Reload();
+        }
+        else
+        {
+            int randomiser = Random.Range(-1, 1);
+            if (randomiser == 0)
+            {
+                shootScript.Reload();
+            }
+            else
+            {
+                healthScript.Heal();
+            }
+        }
+    }
+
+    public IEnumerator Cooldown()
+    {
+        yield return new WaitForSeconds(2.0f);
+        shootScript.attackTimer = 0;
+        coolingDown = false;
     }
 
 
