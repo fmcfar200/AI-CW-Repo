@@ -32,7 +32,6 @@ public class NPCMovementScript : MonoBehaviour {
 	void Update () {
         distance = Vector3.Distance(player.transform.position, transform.position);
         distance = Mathf.RoundToInt(distance);
-        distanceText.text = "Distance: " + distance.ToString();
 
         //CODE MAY BE MOVED TO UTILITYSCRIPT
         if (utilityAI.anxietyU >= 1.0f)
@@ -47,15 +46,7 @@ public class NPCMovementScript : MonoBehaviour {
        
     }
 
-    /*
-    void OnTriggerEnter(Collider coll)
-    {
-        if (coll.gameObject.tag == "Player")
-        {
-            hostile = true;
-        }
-    }
-    */
+    
     public void MoveTowards()
     {
 

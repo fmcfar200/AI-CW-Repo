@@ -56,7 +56,6 @@ public class ShootScript : MonoBehaviour {
             else
             {
                 utilityScript.coolingDown = true;
-                StartCoroutine(utilityScript.Cooldown());
 
             }
         }
@@ -100,8 +99,9 @@ public class ShootScript : MonoBehaviour {
           
     }
 
-    public void Reload()
+    public IEnumerator Reload()
     {
+        yield return new WaitForSeconds(2.0f);
         if (currentAmmo > 0)
         {
             if (currentClip < maxClip && maxAmmo > 0)

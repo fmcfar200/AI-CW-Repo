@@ -54,6 +54,8 @@ public class UtilityAIScript : MonoBehaviour {
         if (coolingDown == true)
         {
             MakeDecision(healthU,reloadU);
+            coolingDown = false;
+            shootScript.attackTimer = 2.0f;
         }
 
     }
@@ -63,7 +65,6 @@ public class UtilityAIScript : MonoBehaviour {
         anxietyU = (1 / (1 + Mathf.Pow(distance, 2.7f*0.45f))) * 10;
         anxietyU = Mathf.Clamp(anxietyU, 0.0f, 1.0f);
         anxietyTextObj.text = "Anxiety: " + anxietyU;
-        //Debug.Log("Anxiety: " + anxiety.ToString()+ " at Distance " + distance.ToString() );
 
     }
     void CalculateReload(int currentClip)
@@ -77,7 +78,6 @@ public class UtilityAIScript : MonoBehaviour {
         healthU = (1 / (1 + Mathf.Pow(currentHealth, 1.5f * 0.65f))) * 10;
         healthU = Mathf.Clamp(healthU, 0.0f, 1.0f);
         healthTextObj.text = "Health: " + healthU;
-        Debug.Log("Health Utility: " + healthU.ToString()+ " at Health Value " + currentHealth.ToString() );
 
     }
 
@@ -93,10 +93,13 @@ public class UtilityAIScript : MonoBehaviour {
         if (healthU > reloadU )
         {
             healthScript.Heal();
+            Debug.Log("Healing");
         }
         else if (reloadU > healthU)
         {
-            shootScript.Reload();
+            StartCoroutine(shootScript.Reload());
+            Debug.Log("relaoding");
+
         }
         else
         {
@@ -104,20 +107,19 @@ public class UtilityAIScript : MonoBehaviour {
             if (randomiser == 0)
             {
                 shootScript.Reload();
+                Debug.Log("reloading");
+
             }
             else
             {
                 healthScript.Heal();
+                Debug.Log("Healing");
+
             }
         }
     }
 
-    public IEnumerator Cooldown()
-    {
-        yield return new WaitForSeconds(2.0f);
-        shootScript.attackTimer = 0;
-        coolingDown = false;
-    }
+   
 
 
 }
