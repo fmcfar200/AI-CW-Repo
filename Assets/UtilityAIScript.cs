@@ -55,7 +55,7 @@ public class UtilityAIScript : MonoBehaviour {
         {
             MakeDecision(healthU,reloadU);
             coolingDown = false;
-            
+            shootScript.attackTimer = 2.0f;
         }
 
     }
@@ -94,14 +94,11 @@ public class UtilityAIScript : MonoBehaviour {
         {
             healthScript.Heal();
             Debug.Log("Healing");
-            coolingDown = false;
         }
         else if (reloadU > healthU)
         {
-            shootScript.Reload();
-            Debug.Log("Reloading");
-            coolingDown = false;
-
+            StartCoroutine(shootScript.Reload());
+            Debug.Log("relaoding");
 
         }
         else
@@ -111,16 +108,12 @@ public class UtilityAIScript : MonoBehaviour {
             {
                 shootScript.Reload();
                 Debug.Log("reloading");
-                coolingDown = false;
-
 
             }
             else
             {
                 healthScript.Heal();
                 Debug.Log("Healing");
-                coolingDown = false;
-
 
             }
         }

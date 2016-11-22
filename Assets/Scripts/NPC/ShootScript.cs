@@ -25,8 +25,6 @@ public class ShootScript : MonoBehaviour {
     public Text ammoText;
 
     public float attackTimer;
-
-    public AudioClip reloadSound;
     
    
 
@@ -48,9 +46,10 @@ public class ShootScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        Debug.Log(attackTimer.ToString());
         if (npcMovementScript.hostile != false)
         {
-            if (attackTimer < 5.0f && utilityScript.coolingDown == false)
+            if (attackTimer < 5.0f)
             {
                 Attack();
             }
@@ -100,15 +99,9 @@ public class ShootScript : MonoBehaviour {
           
     }
 
-    public void Reload()
+    public IEnumerator Reload()
     {
-       // GetComponent<AudioSource>().PlayOneShot(reloadSound);
-        StartCoroutine(DelayAndReload());
-    }
-
-    IEnumerator DelayAndReload()
-    {
-        yield return new WaitForSeconds(reloadSound.length);
+        yield return new WaitForSeconds(2.0f);
         if (currentAmmo > 0)
         {
             if (currentClip < maxClip && maxAmmo > 0)
