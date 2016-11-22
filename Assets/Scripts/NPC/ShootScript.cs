@@ -17,6 +17,7 @@ public class ShootScript : MonoBehaviour {
     float nextFire = 0.0f;
     float bulletForce = 100.0f;
     bool reloading = false;
+    public AudioClip reloadSound;
 
     public GameObject bulletPrefab;
     public GameObject bulletSpawn;
@@ -28,6 +29,8 @@ public class ShootScript : MonoBehaviour {
     public bool coolingDown = false;
 
     float attackTimer = 5.0f;
+
+    public AudioClip shotSound;
 
 
 	// Use this for initialization
@@ -99,6 +102,7 @@ public class ShootScript : MonoBehaviour {
 
     void Shoot()
     {
+        GetComponent<AudioSource>().PlayOneShot(shotSound);
         firedBullet = Instantiate(bulletPrefab, bulletSpawn.transform.position, Quaternion.identity) as GameObject;
         firedBullet.name = "Bullet";
        currentClip--;
@@ -107,7 +111,7 @@ public class ShootScript : MonoBehaviour {
     void Attack()
     {
         attackTimer -= Time.deltaTime;
-        npcMovementScript.MoveTowardsAndAwayFromPlayer();
+        //npcMovementScript.MoveTowardsAndAwayFromPlayer();
 
         AimAtPlayer();
         
@@ -125,13 +129,15 @@ public class ShootScript : MonoBehaviour {
         {
             if (currentAmmo > 0)
             {
+                GetComponent<AudioSource>().PlayOneShot(reloadSound);
+
                 if (currentClip < maxClip && maxAmmo > 0)
                 {
                     currentClip = maxClip;
                     currentAmmo--;
                 }
             }
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(reloadSound.length);
 
             reloading = true;
         }

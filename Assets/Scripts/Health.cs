@@ -14,6 +14,8 @@ public class Health : MonoBehaviour {
 
     public bool healing = false;
 
+    public AudioClip healthSound;
+
 
 
 	// Use this for initialization
@@ -44,6 +46,7 @@ public class Health : MonoBehaviour {
 
     public IEnumerator Heal()
     {
+        GetComponent<AudioSource>().PlayOneShot(healthSound);
         if (!healing)
         {
             if (healthKits > 0)
@@ -52,7 +55,7 @@ public class Health : MonoBehaviour {
                 healthKits--;
             }
 
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(healthSound.length);
 
             healing = true;
         }
