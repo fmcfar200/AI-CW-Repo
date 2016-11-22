@@ -5,12 +5,13 @@ using UnityEngine.UI;
 
 public class NPCMovementScript : MonoBehaviour {
 
+    UtilityAIScript utilityAI;
+    public GameObject player;
+
     public float moveSpeed = 5.0f;
     public bool hostile = true;
-    public GameObject player;
     public float distance;
 
-    UtilityAIScript utilityAI;
 
     public Text distanceText;
 
@@ -43,36 +44,33 @@ public class NPCMovementScript : MonoBehaviour {
 
     void FixedUpdate()
     {
-       
     }
 
     
-    public void MoveTowards()
+    public void MoveTowardsAndAwayFromPlayer()
     {
-
         float step = moveSpeed * Time.deltaTime;
-        //TEMP CODE |||| REPLACE WITH STEERING BEHAVIOURS
-        if (distance > 10.0f)
+
+        if (distance > 15f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position,step);
-           
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
+
+
         }
+        /*
+        if (distance < 15f)
+        {
+            Vector3 direction = transform.position - player.transform.position;
+
+            transform.Translate(direction * step * Time.deltaTime);
+
+            //transform.position = Vector3.MoveTowards(transform.position, player.transform.position, -step);
+        }
+        */
        
        
     }
 
-    /*
-    public void FallBack()
-    {
-        float step = moveSpeed * Time.deltaTime;
-        //TEMP CODE |||| REPLACE WITH STEERING BEHAVIOURS
-        if (distance < 10.0f)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, -step);
-            float yValue = transform.position.y;
-            yValue = Mathf.Clamp(transform.position.y, 5.7f, 5.7f);
 
-        }
-    }
-    */
+   
 }

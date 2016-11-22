@@ -84,6 +84,8 @@ public class ShootScript : MonoBehaviour {
 
     void FixedUpdate()
     {
+        
+
         if (firedBullet != null)
         {
             firedBullet.GetComponent<BulletScript>().ApplyForce(this.gameObject, bulletForce);
@@ -105,9 +107,10 @@ public class ShootScript : MonoBehaviour {
     void Attack()
     {
         attackTimer -= Time.deltaTime;
-        
+        npcMovementScript.MoveTowardsAndAwayFromPlayer();
+
         AimAtPlayer();
-        npcMovementScript.MoveTowards();
+        
         if (Time.time > nextFire && currentClip > 0)
         {
             nextFire = Time.time + fireRate;
@@ -134,6 +137,7 @@ public class ShootScript : MonoBehaviour {
         }
         reloading = false;
     }
+
 
     public void ResetAttackTimer()
     {

@@ -83,7 +83,7 @@ public class UtilityAIScript : MonoBehaviour {
     }
     void CalculateHealth(int currenHealth)
     {
-        healthU = (1 / (1 + Mathf.Pow(currentHealth, 1.5f * 0.65f))) * 10;
+        healthU = (1 / (1 + Mathf.Pow(currentHealth, 1.5f ))) *100;
         healthU = Mathf.Clamp(healthU, 0.0f, 1.0f);
         healthTextObj.text = "Health: " + healthU;
 
