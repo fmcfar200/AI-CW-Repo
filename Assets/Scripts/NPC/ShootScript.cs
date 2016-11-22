@@ -4,29 +4,30 @@ using UnityEngine.UI;
 
 public class ShootScript : MonoBehaviour {
 
-
-    protected NPCMovementScript npcMovementScript;
+    NPCMovementScript npcMovementScript;
     UtilityAIScript utilityScript;
+    Health healthScript;
+
     public int currentClip;
     int currentAmmo;
 
     int maxClip = 16;
     int maxAmmo = 4;
-
     float fireRate = 0.5f;
     float nextFire = 0.0f;
-
     float bulletForce = 100.0f;
-
+    bool reloading = false;
 
     public GameObject bulletPrefab;
     public GameObject bulletSpawn;
     GameObject firedBullet;
+
     public Text ammoText;
 
-    public float attackTimer;
-    
-   
+    float cooldownTime = 5.0f;
+    public bool coolingDown = false;
+
+    float attackTimer = 5.0f;
 
 
 	// Use this for initialization
@@ -34,10 +35,12 @@ public class ShootScript : MonoBehaviour {
     {
         npcMovementScript = this.gameObject.GetComponent<NPCMovementScript>();
         utilityScript = this.gameObject.GetComponent<UtilityAIScript>();
+        healthScript = this.gameObject.GetComponent<Health>();
+
         currentClip = maxClip;
         currentAmmo = maxAmmo;
 
-        utilityScript.cooldownTime = 4.0f;
+        
 
         //TEMP
         GetComponent<Rigidbody>().isKinematic = true;
@@ -46,17 +49,31 @@ public class ShootScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        Debug.Log(attackTimer.ToString());
+        Debug.Log(coolingDown.ToString());
         if (npcMovementScript.hostile != false)
         {
-            if (attackTimer < 5.0f)
+            if (!coolingDown)
             {
-                Attack();
+                if (attackTimer > 0 && !reloading && !healthScript.healing)
+                {
+                    Attack();
+
+                }
+                else
+                {
+                    coolingDown = true;
+                    attackTimer = 5.0f;
+                }
+
             }
             else
             {
-                utilityScript.coolingDown = true;
-
+                cooldownTime -= Time.deltaTime;
+                if (cooldownTime <=0)
+                {
+                    coolingDown = false;
+                    cooldownTime = 5.0f;
+                }
             }
         }
 
@@ -87,7 +104,7 @@ public class ShootScript : MonoBehaviour {
 
     void Attack()
     {
-        attackTimer += Time.deltaTime;
+        attackTimer -= Time.deltaTime;
         
         AimAtPlayer();
         npcMovementScript.MoveTowards();
@@ -101,15 +118,26 @@ public class ShootScript : MonoBehaviour {
 
     public IEnumerator Reload()
     {
-        yield return new WaitForSeconds(2.0f);
-        if (currentAmmo > 0)
+        if (!reloading)
         {
-            if (currentClip < maxClip && maxAmmo > 0)
+            if (currentAmmo > 0)
             {
-                currentClip = maxClip;
-                currentAmmo--;
+                if (currentClip < maxClip && maxAmmo > 0)
+                {
+                    currentClip = maxClip;
+                    currentAmmo--;
+                }
             }
+            yield return new WaitForSeconds(2.0f);
+
+            reloading = true;
         }
+        reloading = false;
+    }
+
+    public void ResetAttackTimer()
+    {
+        attackTimer = 0;
     }
 
    

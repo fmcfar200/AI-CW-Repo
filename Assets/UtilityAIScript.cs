@@ -26,9 +26,8 @@ public class UtilityAIScript : MonoBehaviour {
     public Text reloadTextObj;
     public Text healthTextObj;
 
+    bool makingDecision = false;
 
-    public float cooldownTime;
-    public bool coolingDown;
 
     // Use this for initialization
     void Start () {
@@ -45,18 +44,27 @@ public class UtilityAIScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+
         distance = movementScript.distance;
         currentClip = shootScript.currentClip;
         currentHealth = healthScript.health;
 
         CalculateUtilities();
 
-        if (coolingDown == true)
+        
+        if (shootScript.coolingDown)
         {
-            MakeDecision(healthU,reloadU);
-            coolingDown = false;
-            shootScript.attackTimer = 2.0f;
+            if (!makingDecision)
+            {
+                MakeDecision(healthU, reloadU);
+                makingDecision = true;
+            }
         }
+        else
+        {
+            makingDecision = false;
+        }
+        
 
     }
 
@@ -80,6 +88,7 @@ public class UtilityAIScript : MonoBehaviour {
         healthTextObj.text = "Health: " + healthU;
 
     }
+    
 
     void CalculateUtilities()
     {
@@ -92,13 +101,14 @@ public class UtilityAIScript : MonoBehaviour {
     {
         if (healthU > reloadU )
         {
-            healthScript.Heal();
+            StartCoroutine(healthScript.Heal());
             Debug.Log("Healing");
         }
         else if (reloadU > healthU)
         {
             StartCoroutine(shootScript.Reload());
             Debug.Log("relaoding");
+           
 
         }
         else
@@ -106,19 +116,20 @@ public class UtilityAIScript : MonoBehaviour {
             int randomiser = Random.Range(-1, 1);
             if (randomiser == 0)
             {
-                shootScript.Reload();
+                StartCoroutine(shootScript.Reload());
                 Debug.Log("reloading");
 
             }
             else
             {
-                healthScript.Heal();
+                StartCoroutine(healthScript.Heal());
                 Debug.Log("Healing");
 
             }
         }
     }
 
+    
    
 
 

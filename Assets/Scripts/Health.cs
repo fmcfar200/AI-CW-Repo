@@ -7,10 +7,12 @@ public class Health : MonoBehaviour {
 
     public int health;
     int maxHealth = 100;
-    int healthKits = 1;
+    int healthKits = 3;
 
     public Text healthText;
     public Text healthKitText;
+
+    public bool healing = false;
 
 
 
@@ -40,12 +42,20 @@ public class Health : MonoBehaviour {
         health -= amount;
     }
 
-    public void Heal()
+    public IEnumerator Heal()
     {
-        if (healthKits > 0)
+        if (!healing)
         {
-            health = maxHealth;
-            healthKits--;
+            if (healthKits > 0)
+            {
+                health = maxHealth;
+                healthKits--;
+            }
+
+            yield return new WaitForSeconds(2.0f);
+
+            healing = true;
         }
+        healing = false;
     }
 }
