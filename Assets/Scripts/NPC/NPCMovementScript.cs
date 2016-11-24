@@ -15,12 +15,16 @@ public class NPCMovementScript : MonoBehaviour {
 
     public Text distanceText;
 
+    public bool takeCover = false;
     bool takingCover = false;
+
+    Transform cover;
 
 
     // Use this for initialization
     void Start ()
     {
+
         hostile = false;
         player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
@@ -43,11 +47,22 @@ public class NPCMovementScript : MonoBehaviour {
 
     void FixedUpdate()
     {
-        
-        
-           //FindCover();
+        if (takeCover)
+        {
+            if (!takingCover)
+            {
+                Vector3 foundCover = FindCover();
+                transform.position = Vector3.MoveTowards(transform.position, foundCover,
+                         moveSpeed * Time.deltaTime);
 
-        
+                if (transform.position == foundCover)
+                {
+                    transform.position = foundCover;
+                    takingCover = true;
+                }
+            }
+
+        }
     }
 
 
@@ -75,7 +90,7 @@ public class NPCMovementScript : MonoBehaviour {
        
     }
 
-    void FindCover()
+    public Vector3 FindCover()
     {
         
             GameObject chosenCover;
@@ -84,7 +99,6 @@ public class NPCMovementScript : MonoBehaviour {
             if (coverObjects != null)
             {
                 int coverIndex = Random.Range(0, coverObjects.Length);
-                Debug.Log("cover index: " + coverIndex.ToString());
                 chosenCover = coverObjects[coverIndex];
 
                 if (chosenCover != null)
@@ -97,15 +111,11 @@ public class NPCMovementScript : MonoBehaviour {
 
                     if (c1DistanceToPlayer > c2DistanceToPlayer)
                     {
-                        Debug.Log(coverSpot1.name.ToString());
-                        StartCoroutine(TakeCover(coverSpot1));
-
+                        cover = coverSpot1;
                     }
                     else
                     {
-                        Debug.Log(coverSpot2.name.ToString());
-
-                        StartCoroutine(TakeCover(coverSpot2));
+                        cover = coverSpot2;
                     }
 
                 }
@@ -113,24 +123,16 @@ public class NPCMovementScript : MonoBehaviour {
             else
             {
                 Debug.Log("No Cover Found");
+                
             }
 
-
+        return cover.position;
         
     }
 
-    IEnumerator TakeCover(Transform cover)
+    IEnumerator StayAndLeave()
     {
-        if (!takingCover)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, cover.position, moveSpeed * Time.deltaTime);
-            if (transform.position == cover.position)
-            {
-                transform.position = cover.position;
-            }
-            takingCover = true;
-            yield return new WaitForSeconds(3.0f);
-        }
+        yield return new WaitForSeconds(5.0f);
         takingCover = false;
     }
 

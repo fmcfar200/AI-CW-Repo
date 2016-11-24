@@ -42,7 +42,8 @@ public class UtilityAIScript : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 
 
         distance = movementScript.distance;
@@ -56,7 +57,7 @@ public class UtilityAIScript : MonoBehaviour {
         {
             if (!makingDecision)
             {
-                MakeDecision(healthU, reloadU);
+                MakeDecision(healthU, reloadU, anxietyU);
                 makingDecision = true;
             }
         }
@@ -68,19 +69,15 @@ public class UtilityAIScript : MonoBehaviour {
 
     }
 
-    void CalculateAnxiety(float distance)
-    {
-        anxietyU = (1 / (1 + Mathf.Pow(distance, 2.7f*0.45f))) * 10;
-        anxietyU = Mathf.Clamp(anxietyU, 0.0f, 1.0f);
-        anxietyTextObj.text = "Anxiety: " + anxietyU;
+   
 
-    }
     void CalculateReload(int currentClip)
     {
         reloadU = (1 / (1 + Mathf.Pow(currentClip, 4.0f * 0.45f))) * 10;
         reloadU = Mathf.Clamp(reloadU, 0.0f, 1.0f);
         reloadTextObj.text = "Reload: " + reloadU;
     }
+
     void CalculateHealth(int currenHealth)
     {
         healthU = (1 / (1 + Mathf.Pow(currentHealth, 1.5f ))) *100;
@@ -88,28 +85,55 @@ public class UtilityAIScript : MonoBehaviour {
         healthTextObj.text = "Health: " + healthU;
 
     }
+
+    void CalculateAnxiety(float distance,int currentHealth,int currentClip )
+    {
+        anxietyU = (1 / (1 + Mathf.Pow(currentHealth+distance, 2.7f )))*10000;
+        anxietyU = Mathf.Clamp(anxietyU, 0.0f, 1.0f);
+        anxietyTextObj.text = "Anxiety: " + anxietyU;
+
+    }
+
+    
+        
+    
     
 
     void CalculateUtilities()
     {
-        CalculateAnxiety(distance);
+        CalculateAnxiety(distance,currentHealth,currentClip);
         CalculateReload(currentClip);
         CalculateHealth(currentHealth);
     }
 
-    void MakeDecision(float healthU, float reloadU)
+    void MakeDecision(float healthU, float reloadU, float anxiety)
     {
+        //pref
         if (healthU > reloadU )
         {
-            StartCoroutine(healthScript.Heal());
-            Debug.Log("Healing");
+            if (healthU > anxietyU)
+            {
+                
+                StartCoroutine(healthScript.Heal());
+                Debug.Log("Healing");
+            }
+            else
+            {
+                movementScript.takeCover = true;
+            }
+            
         }
         else if (reloadU > healthU)
         {
-            StartCoroutine(shootScript.Reload());
-            Debug.Log("relaoding");
-           
-
+            if (reloadU > anxietyU)
+            {
+                StartCoroutine(shootScript.Reload());
+                Debug.Log("relaoding");
+            }
+            else
+            {
+                movementScript.takeCover = true;
+            }
         }
         else
         {

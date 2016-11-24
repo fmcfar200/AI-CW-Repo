@@ -52,7 +52,6 @@ public class ShootScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        Debug.Log(coolingDown.ToString());
         if (npcMovementScript.hostile != false)
         {
             if (!coolingDown)
@@ -105,13 +104,13 @@ public class ShootScript : MonoBehaviour {
         GetComponent<AudioSource>().PlayOneShot(shotSound);
         firedBullet = Instantiate(bulletPrefab, bulletSpawn.transform.position, Quaternion.identity) as GameObject;
         firedBullet.name = "Bullet";
-       currentClip--;
+        currentClip--;
     }
 
     void Attack()
     {
         attackTimer -= Time.deltaTime;
-        //npcMovementScript.MoveTowardsAndAwayFromPlayer();
+        npcMovementScript.MoveTowardsAndAwayFromPlayer();
 
         AimAtPlayer();
         
