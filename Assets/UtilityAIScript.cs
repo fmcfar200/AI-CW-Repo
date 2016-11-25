@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using UnityEngine.UI;
 
+
 public class UtilityAIScript : MonoBehaviour {
 
+
+   
     //Objects and Scripts
     GameObject enemyObj;
     NPCMovementScript movementScript;
@@ -44,20 +48,17 @@ public class UtilityAIScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-
-
         distance = movementScript.distance;
         currentClip = shootScript.currentClip;
         currentHealth = healthScript.health;
 
         CalculateUtilities();
-
         
         if (shootScript.coolingDown)
         {
             if (!makingDecision)
             {
-                MakeDecision(healthU, reloadU, anxietyU);
+                MakeDecisionAbsolute(healthU, reloadU, anxietyU);
                 makingDecision = true;
             }
         }
@@ -65,11 +66,7 @@ public class UtilityAIScript : MonoBehaviour {
         {
             makingDecision = false;
         }
-        
-
     }
-
-   
 
     void CalculateReload(int currentClip)
     {
@@ -94,11 +91,6 @@ public class UtilityAIScript : MonoBehaviour {
 
     }
 
-    
-        
-    
-    
-
     void CalculateUtilities()
     {
         CalculateAnxiety(distance,currentHealth,currentClip);
@@ -106,6 +98,35 @@ public class UtilityAIScript : MonoBehaviour {
         CalculateHealth(currentHealth);
     }
 
+    void MakeDecisionAbsolute(float healthU,float reloadU, float anxietyU)
+    {
+        float tempHealthU = healthU;
+        float tempReloadU = reloadU;
+        float tempAnxietyU = anxietyU;
+
+        float[] utilities = {healthU,reloadU,anxietyU};
+        Array.Sort(utilities);
+
+
+        if (utilities[utilities.Length-1] == tempHealthU)
+        {
+           StartCoroutine(healthScript.Heal());
+        }
+        else if (utilities[utilities.Length-1] == tempReloadU)
+        {
+            StartCoroutine(shootScript.Reload());
+
+        }
+        else if (utilities[utilities.Length-1] == tempAnxietyU)
+        {
+            movementScript.takeCover = true;
+        }
+
+        
+       
+    }
+
+    /*
     void MakeDecision(float healthU, float reloadU, float anxiety)
     {
         //pref
@@ -113,7 +134,6 @@ public class UtilityAIScript : MonoBehaviour {
         {
             if (healthU > anxietyU)
             {
-                
                 StartCoroutine(healthScript.Heal());
                 Debug.Log("Healing");
             }
@@ -121,7 +141,6 @@ public class UtilityAIScript : MonoBehaviour {
             {
                 movementScript.takeCover = true;
             }
-            
         }
         else if (reloadU > healthU)
         {
@@ -137,22 +156,20 @@ public class UtilityAIScript : MonoBehaviour {
         }
         else
         {
-            int randomiser = Random.Range(-1, 1);
+            int randomiser = UnityEngine.Random.Range(-1, 1);
             if (randomiser == 0)
             {
                 StartCoroutine(shootScript.Reload());
                 Debug.Log("reloading");
-
             }
             else
             {
                 StartCoroutine(healthScript.Heal());
                 Debug.Log("Healing");
-
             }
         }
     }
-
+    */
     
    
 
