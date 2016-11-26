@@ -66,28 +66,37 @@ public class NPCMovementScript : MonoBehaviour {
     }
 
 
-    public void MoveTowardsAndAwayFromPlayer()
+    public void SeekAndFlee()
     {
-        float step = moveSpeed * Time.deltaTime;
-
-        if (distance > 15f)
+        if (distance > 20.0f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
-
-
+            Seek();
         }
-        /*
-        if (distance < 15f)
+        else
         {
-            Vector3 direction = transform.position - player.transform.position;
-
-            transform.Translate(direction * step * Time.deltaTime);
-
-            //transform.position = Vector3.MoveTowards(transform.position, player.transform.position, -step);
+            Flee();
         }
-        */
        
-       
+    }
+
+   void Seek()
+   {
+        Vector3 desiredVelocity = player.transform.position - transform.position;
+        desiredVelocity.y = 0;
+
+        Vector3 movementVector = desiredVelocity.normalized * moveSpeed * Time.deltaTime;
+        transform.position += movementVector;
+        
+    }
+    void Flee()
+    {
+        float minimumDistance = 20.0f;
+        Vector3 desiredVelocity = player.transform.position - transform.position;
+        desiredVelocity = -desiredVelocity;
+        desiredVelocity.y = 0;
+        Vector3 movementVector = desiredVelocity.normalized * moveSpeed * Time.deltaTime;
+        transform.position += movementVector;
+        
     }
 
     public Vector3 FindCover()

@@ -70,16 +70,23 @@ public class UtilityAIScript : MonoBehaviour {
 
     void CalculateReload(int currentClip)
     {
-        reloadU = (1 / (1 + Mathf.Pow(currentClip, 4.0f * 0.45f))) * 10;
-        reloadU = Mathf.Clamp(reloadU, 0.0f, 1.0f);
-        reloadTextObj.text = "Reload: " + reloadU;
+        if (shootScript.currentAmmo != 0)
+        {
+            reloadU = (1 / (1 + Mathf.Pow(currentClip, 4.0f * 0.45f))) * 10;
+            reloadU = Mathf.Clamp(reloadU, 0.0f, 1.0f);
+            reloadTextObj.text = "Reload: " + reloadU.ToString("F1");
+        }
+        else
+        {
+            reloadU = 0;
+        }
     }
 
     void CalculateHealth(int currenHealth)
     {
         healthU = (1 / (1 + Mathf.Pow(currentHealth, 1.5f ))) *100;
         healthU = Mathf.Clamp(healthU, 0.0f, 1.0f);
-        healthTextObj.text = "Health: " + healthU;
+        healthTextObj.text = "Health: " + healthU.ToString("F1");
 
     }
 
@@ -87,7 +94,7 @@ public class UtilityAIScript : MonoBehaviour {
     {
         anxietyU = (1 / (1 + Mathf.Pow(currentHealth+distance, 2.7f )))*10000;
         anxietyU = Mathf.Clamp(anxietyU, 0.0f, 1.0f);
-        anxietyTextObj.text = "Anxiety: " + anxietyU;
+        anxietyTextObj.text = "Anxiety: " + anxietyU.ToString("F1");
 
     }
 

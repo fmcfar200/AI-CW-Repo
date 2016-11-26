@@ -9,7 +9,7 @@ public class ShootScript : MonoBehaviour {
     Health healthScript;
 
     public int currentClip;
-    int currentAmmo;
+    public int currentAmmo;
 
     int maxClip = 16;
     int maxAmmo = 4;
@@ -110,7 +110,7 @@ public class ShootScript : MonoBehaviour {
     void Attack()
     {
         attackTimer -= Time.deltaTime;
-        npcMovementScript.MoveTowardsAndAwayFromPlayer();
+        npcMovementScript.SeekAndFlee();
 
         AimAtPlayer();
         
