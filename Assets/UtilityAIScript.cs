@@ -74,6 +74,7 @@ public class UtilityAIScript : MonoBehaviour {
         {
             reloadU = (1 / (1 + Mathf.Pow(currentClip, 4.0f * 0.45f))) * 10;
             reloadU = Mathf.Clamp(reloadU, 0.0f, 1.0f);
+            Debug.Log(reloadU.ToString());
             reloadTextObj.text = "Reload: " + reloadU.ToString("F1");
         }
         else
@@ -128,9 +129,12 @@ public class UtilityAIScript : MonoBehaviour {
         {
             movementScript.takeCover = true;
         }
+         
+    }
 
-        
-       
+    void MakeDecisionRelative(float healthU,float reloadU,float anxietyU)
+    {
+
     }
 
     /*
