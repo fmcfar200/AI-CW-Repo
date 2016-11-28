@@ -36,6 +36,8 @@ public class UtilityAIScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
+        //finds enemy object
         enemyObj = GameObject.Find("Enemy");
         if (enemyObj != null)
         {
@@ -49,17 +51,20 @@ public class UtilityAIScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        //all variables used to calculate utilities
         distance = movementScript.distance;
         currentClip = shootScript.currentClip;
         currentHealth = healthScript.health;
 
+        //method for calculating utilities is called
         CalculateUtilities();
         
+        //if cooling down then make decision
         if (shootScript.coolingDown)
         {
             if (!makingDecision)
             {
-                MakeDecisionRelative2(healthU, reloadU, coverU);
+                MakeDecisionRelative(healthU, reloadU, coverU);
                 makingDecision = true;
             }
         }
@@ -69,10 +74,9 @@ public class UtilityAIScript : MonoBehaviour {
         }
     }
 
+    //calculates reload utility 
     void CalculateReload(int currentClip)
-    {
-
-        
+    { 
         if (shootScript.currentAmmo != 0)
         {
             reloadU = (1 / (1 + Mathf.Pow(currentClip, 4.0f * 0.45f))) * 10;
@@ -86,6 +90,7 @@ public class UtilityAIScript : MonoBehaviour {
         
     }
 
+    //calculate health utility 
     void CalculateHealth(int currenHealth)
     {
         healthU = (1 / (1 + Mathf.Pow(currentHealth, 1.5f ))) *100;
@@ -94,6 +99,7 @@ public class UtilityAIScript : MonoBehaviour {
 
     }
 
+    //calculate cover utility
     void CalculateCover(float distance,int currentHealth,int currentClip )
     {
         coverU = (1 / (1 + Mathf.Pow(currentHealth+distance, 2.7f )))*10000;
@@ -102,6 +108,7 @@ public class UtilityAIScript : MonoBehaviour {
 
     }
 
+    //calculates all utilities
     void CalculateUtilities()
     {
         CalculateCover(distance,currentHealth,currentClip);
@@ -109,16 +116,19 @@ public class UtilityAIScript : MonoBehaviour {
         CalculateHealth(currentHealth);
     }
 
+    //method for Absolute Utility
     void MakeDecisionAbsolute(float healthU,float reloadU, float anxietyU)
     {
+        //stores all utilities in a temp variable
         float tempHealthU = healthU;
         float tempReloadU = reloadU;
         float tempAnxietyU = anxietyU;
-
+        //array of utilties
         float[] utilities = {healthU,reloadU,anxietyU};
+        //array is sorted
         Array.Sort(utilities);
 
-
+        //if statement to decide what action to take 
         if (utilities[utilities.Length-1] == tempHealthU)
         {
            StartCoroutine(healthScript.Heal());
@@ -135,13 +145,20 @@ public class UtilityAIScript : MonoBehaviour {
          
     }
 
-    void MakeDecisionRelative2(float healthU, float reloadU, float anxietyU)
+    //method for Relative Utility
+    void MakeDecisionRelative(float healthU, float reloadU, float anxietyU)
     {
+        //list for storing utilities
         List<float> utilities = new List<float>();
+        //converted utilities to ints 
         float uHealToInt = healthU * 10;
         float uReloadToInt = reloadU * 10;
         float uAnxietyToInt = anxietyU * 10;
 
+        /*
+        adds all the utilities to the list. The larger the utility
+        the more often it will appear in the list.
+        */
         for(int i = 0; i < uHealToInt;i++)
         {
             utilities.Add(healthU);
@@ -162,7 +179,10 @@ public class UtilityAIScript : MonoBehaviour {
             Debug.Log(utilities[i]);
         }
 
+        //random index is found
         int randomIndex = UnityEngine.Random.Range(0, utilities.Count);
+
+        //if the random value in the list is equal to any of the utilies then it fires that action
         if (utilities[randomIndex] == healthU && healthScript.health != 100)
         {
             Debug.Log("healing");
@@ -183,6 +203,7 @@ public class UtilityAIScript : MonoBehaviour {
             movementScript.takeCover = true;
         }
 
+        //clears the list
         utilities.Clear();
     }
 
@@ -241,50 +262,7 @@ public class UtilityAIScript : MonoBehaviour {
 
     }
     */
-    /*
-    void MakeDecision(float healthU, float reloadU, float anxiety)
-    {
-        //pref
-        if (healthU > reloadU )
-        {
-            if (healthU > anxietyU)
-            {
-                StartCoroutine(healthScript.Heal());
-                Debug.Log("Healing");
-            }
-            else
-            {
-                movementScript.takeCover = true;
-            }
-        }
-        else if (reloadU > healthU)
-        {
-            if (reloadU > anxietyU)
-            {
-                StartCoroutine(shootScript.Reload());
-                Debug.Log("relaoding");
-            }
-            else
-            {
-                movementScript.takeCover = true;
-            }
-        }
-        else
-        {
-            int randomiser = UnityEngine.Random.Range(-1, 1);
-            if (randomiser == 0)
-            {
-                StartCoroutine(shootScript.Reload());
-                Debug.Log("reloading");
-            }
-            else
-            {
-                StartCoroutine(healthScript.Heal());
-                Debug.Log("Healing");
-            }
-        }
-    }
-    */
+   
 
 
 
