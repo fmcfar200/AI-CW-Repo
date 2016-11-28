@@ -17,7 +17,9 @@ public class NPCMovementScript : MonoBehaviour {
 
     public bool takeCover = false;
     bool takingCover = false;
+    bool coverFound;
 
+    Vector3 foundCover;
     Transform cover;
 
 
@@ -51,23 +53,37 @@ public class NPCMovementScript : MonoBehaviour {
         {
             if (!takingCover)
             {
-                Vector3 foundCover = FindCover();
-                transform.position = Vector3.MoveTowards(transform.position, foundCover,
-                         moveSpeed * Time.deltaTime);
+                if (!coverFound)
+                {
+                    foundCover = FindCover();
+                    coverFound = true;
+                }
+                else
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, foundCover,
+                             moveSpeed * Time.deltaTime);
+                }
 
                 if (transform.position == foundCover)
                 {
                     transform.position = foundCover;
                     takingCover = true;
+                    takeCover = false;
+                    coverFound = false;
+                    
                 }
             }
 
         }
+      
     }
 
 
     public void SeekAndFlee()
     {
+        takingCover = false;
+        takeCover = false;
+        coverFound = false;
         if (distance > 20.0f)
         {
             Seek();

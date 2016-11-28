@@ -21,13 +21,13 @@ public class UtilityAIScript : MonoBehaviour {
     int currentHealth;
 
     //utilities
-    public float anxietyU;
+    public float coverU;
     public float reloadU;
     public float healthU;
 
 
     //UI elements
-    public Text anxietyTextObj;
+    public Text coverTextObj;
     public Text reloadTextObj;
     public Text healthTextObj;
 
@@ -59,7 +59,7 @@ public class UtilityAIScript : MonoBehaviour {
         {
             if (!makingDecision)
             {
-                MakeDecisionRelative2(healthU, reloadU, anxietyU);
+                MakeDecisionRelative2(healthU, reloadU, coverU);
                 makingDecision = true;
             }
         }
@@ -71,6 +71,8 @@ public class UtilityAIScript : MonoBehaviour {
 
     void CalculateReload(int currentClip)
     {
+
+        
         if (shootScript.currentAmmo != 0)
         {
             reloadU = (1 / (1 + Mathf.Pow(currentClip, 4.0f * 0.45f))) * 10;
@@ -81,6 +83,7 @@ public class UtilityAIScript : MonoBehaviour {
         {
             reloadU = 0;
         }
+        
     }
 
     void CalculateHealth(int currenHealth)
@@ -91,17 +94,17 @@ public class UtilityAIScript : MonoBehaviour {
 
     }
 
-    void CalculateAnxiety(float distance,int currentHealth,int currentClip )
+    void CalculateCover(float distance,int currentHealth,int currentClip )
     {
-        anxietyU = (1 / (1 + Mathf.Pow(currentHealth+distance, 2.7f )))*10000;
-        anxietyU = Mathf.Clamp(anxietyU, 0.0f, 1.0f);
-        anxietyTextObj.text = "Anxiety: " + anxietyU.ToString("F1");
+        coverU = (1 / (1 + Mathf.Pow(currentHealth+distance, 2.7f )))*10000;
+        coverU = Mathf.Clamp(coverU, 0.0f, 1.0f);
+        coverTextObj.text = "TakeCover: " + coverU.ToString("F1");
 
     }
 
     void CalculateUtilities()
     {
-        CalculateAnxiety(distance,currentHealth,currentClip);
+        CalculateCover(distance,currentHealth,currentClip);
         CalculateReload(currentClip);
         CalculateHealth(currentHealth);
     }
@@ -160,13 +163,13 @@ public class UtilityAIScript : MonoBehaviour {
         }
 
         int randomIndex = UnityEngine.Random.Range(0, utilities.Count);
-        if (utilities[randomIndex] == healthU)
+        if (utilities[randomIndex] == healthU && healthScript.health != 100)
         {
             Debug.Log("healing");
 
             StartCoroutine(healthScript.Heal());
         }
-        else if (utilities[randomIndex] == reloadU)
+        else if (utilities[randomIndex] == reloadU && shootScript.currentAmmo != 0)
         {
             Debug.Log("reloading");
 
@@ -179,6 +182,8 @@ public class UtilityAIScript : MonoBehaviour {
 
             movementScript.takeCover = true;
         }
+
+        utilities.Clear();
     }
 
     /*

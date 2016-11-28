@@ -11,7 +11,7 @@ public class ShootScript : MonoBehaviour {
     public int currentClip;
     public int currentAmmo;
 
-    int maxClip = 16;
+    public int maxClip = 16;
     int maxAmmo = 4;
     float fireRate = 0.5f;
     float nextFire = 0.0f;
@@ -22,6 +22,8 @@ public class ShootScript : MonoBehaviour {
     public GameObject bulletPrefab;
     public GameObject bulletSpawn;
     GameObject firedBullet;
+    public GameObject emptyClip;
+    GameObject gun;
 
     public Text ammoText;
 
@@ -39,6 +41,7 @@ public class ShootScript : MonoBehaviour {
         npcMovementScript = this.gameObject.GetComponent<NPCMovementScript>();
         utilityScript = this.gameObject.GetComponent<UtilityAIScript>();
         healthScript = this.gameObject.GetComponent<Health>();
+        gun = GameObject.FindGameObjectWithTag("Gun");
 
         currentClip = maxClip;
         currentAmmo = maxAmmo;
@@ -129,7 +132,7 @@ public class ShootScript : MonoBehaviour {
             if (currentAmmo > 0)
             {
                 GetComponent<AudioSource>().PlayOneShot(reloadSound);
-
+                Instantiate(emptyClip, gun.transform.position, Quaternion.identity);
                 if (currentClip < maxClip && maxAmmo > 0)
                 {
                     currentClip = maxClip;
