@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 
@@ -58,7 +59,7 @@ public class UtilityAIScript : MonoBehaviour {
         {
             if (!makingDecision)
             {
-                MakeDecisionAbsolute(healthU, reloadU, anxietyU);
+                MakeDecisionRelative2(healthU, reloadU, anxietyU);
                 makingDecision = true;
             }
         }
@@ -74,7 +75,6 @@ public class UtilityAIScript : MonoBehaviour {
         {
             reloadU = (1 / (1 + Mathf.Pow(currentClip, 4.0f * 0.45f))) * 10;
             reloadU = Mathf.Clamp(reloadU, 0.0f, 1.0f);
-            Debug.Log(reloadU.ToString());
             reloadTextObj.text = "Reload: " + reloadU.ToString("F1");
         }
         else
@@ -132,11 +132,110 @@ public class UtilityAIScript : MonoBehaviour {
          
     }
 
-    void MakeDecisionRelative(float healthU,float reloadU,float anxietyU)
+    void MakeDecisionRelative2(float healthU, float reloadU, float anxietyU)
     {
+        List<float> utilities = new List<float>();
+        float uHealToInt = healthU * 10;
+        float uReloadToInt = reloadU * 10;
+        float uAnxietyToInt = anxietyU * 10;
 
+        for(int i = 0; i < uHealToInt;i++)
+        {
+            utilities.Add(healthU);
+        }
+
+        for (int i = 0; i < uReloadToInt; i++)
+        {
+            utilities.Add(reloadU);
+        }
+
+        for (int i = 0; i < uAnxietyToInt; i++)
+        {
+            utilities.Add(anxietyU);
+        }
+
+        for (int i = 0; i < utilities.Count;i++)
+        {
+            Debug.Log(utilities[i]);
+        }
+
+        int randomIndex = UnityEngine.Random.Range(0, utilities.Count);
+        if (utilities[randomIndex] == healthU)
+        {
+            Debug.Log("healing");
+
+            StartCoroutine(healthScript.Heal());
+        }
+        else if (utilities[randomIndex] == reloadU)
+        {
+            Debug.Log("reloading");
+
+            StartCoroutine(shootScript.Reload());
+
+        }
+        else if (utilities[randomIndex] == anxietyU)
+        {
+            Debug.Log("cover");
+
+            movementScript.takeCover = true;
+        }
     }
 
+    /*
+    void MakeDecisionRelative(float healthU,float reloadU,float anxietyU)
+    {
+        float tempHealthU = healthU;
+        float tempReloadU = reloadU;
+        float tempAnxietyU = anxietyU;
+        float[] utilities = { healthU, reloadU, anxietyU };
+
+
+        //calculate total weight
+        float totalWeight = 0;
+
+        foreach (float utility in utilities)
+        {
+            totalWeight += utility;
+        }
+
+        //pick a random utility value
+        float randomFloat = UnityEngine.Random.Range(0.1f, totalWeight);
+
+        float counter = 0;
+        float chosenUtility = 0;
+        foreach (float utility in utilities)
+        {
+            counter += utility;
+            if (counter >= randomFloat)
+            {
+                chosenUtility = utility;
+            }
+        }
+
+        if (chosenUtility == tempHealthU)
+        {
+            Debug.Log("healing");
+
+            StartCoroutine(healthScript.Heal());
+        }
+        else if (chosenUtility == tempReloadU)
+        {
+            Debug.Log("reloading");
+
+            StartCoroutine(shootScript.Reload());
+
+        }
+        else if (chosenUtility == tempAnxietyU)
+        {
+            Debug.Log("cover");
+
+            movementScript.takeCover = true;
+        }
+
+
+
+    }
+    */
     /*
     void MakeDecision(float healthU, float reloadU, float anxiety)
     {
@@ -181,8 +280,8 @@ public class UtilityAIScript : MonoBehaviour {
         }
     }
     */
-    
-   
+
+
 
 
 }

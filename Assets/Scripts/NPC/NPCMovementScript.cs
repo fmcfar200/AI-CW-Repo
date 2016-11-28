@@ -40,7 +40,7 @@ public class NPCMovementScript : MonoBehaviour {
 	void Update () {
         distance = Vector3.Distance(player.transform.position, transform.position);
         distance = Mathf.RoundToInt(distance);
-       
+        distanceText.text = distance.ToString("F2");
         
 	
 	}
