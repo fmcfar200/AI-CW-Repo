@@ -21,16 +21,19 @@ public class UtilityAIScript : MonoBehaviour {
     int currentHealth;
 
     //utilities
+    public float attackU;
     public float coverU;
     public float reloadU;
     public float healthU;
 
 
     //UI elements
+    public Text attackTextObj;
     public Text coverTextObj;
     public Text reloadTextObj;
     public Text healthTextObj;
 
+    //decision making bool
     bool makingDecision = false;
 
 
@@ -64,7 +67,7 @@ public class UtilityAIScript : MonoBehaviour {
         {
             if (!makingDecision)
             {
-                MakeDecisionRelative(healthU, reloadU, coverU);
+                MakeDecisionRelative(healthU, reloadU, coverU,attackU);
                 makingDecision = true;
             }
         }
@@ -73,6 +76,8 @@ public class UtilityAIScript : MonoBehaviour {
             makingDecision = false;
         }
     }
+
+    
 
     //calculates reload utility 
     void CalculateReload(int currentClip)
@@ -102,27 +107,40 @@ public class UtilityAIScript : MonoBehaviour {
     //calculate cover utility
     void CalculateCover(float distance,int currentHealth,int currentClip )
     {
-        coverU = (1 / (1 + Mathf.Pow(currentHealth+distance, 2.7f )))*10000;
+        coverU = (1 / (1 + Mathf.Pow(currentHealth*distance, 2.7f )))*10000;
         coverU = Mathf.Clamp(coverU, 0.0f, 1.0f);
         coverTextObj.text = "TakeCover: " + coverU.ToString("F1");
+
+    }
+
+   
+    //clauclates attack Utility
+    void CalculateAttack(float reload, float heal)
+    {
+        attackU = (1 / (1 + Mathf.Pow(reload + heal, 2.7f)));
+        Debug.Log(attackU.ToString());
+        reloadU = Mathf.Clamp(reloadU, 0.0f, 1.0f);
+        attackTextObj.text = "Attack: " + attackU.ToString("F1");
 
     }
 
     //calculates all utilities
     void CalculateUtilities()
     {
-        CalculateCover(distance,currentHealth,currentClip);
+        CalculateCover(distance, currentHealth, currentClip);
         CalculateReload(currentClip);
         CalculateHealth(currentHealth);
+        CalculateAttack(reloadU, healthU);
     }
 
     //method for Absolute Utility
-    void MakeDecisionAbsolute(float healthU,float reloadU, float anxietyU)
+    void MakeDecisionAbsolute(float healthU,float reloadU, float anxietyU )
     {
         //stores all utilities in a temp variable
         float tempHealthU = healthU;
         float tempReloadU = reloadU;
         float tempAnxietyU = anxietyU;
+        
         //array of utilties
         float[] utilities = {healthU,reloadU,anxietyU};
         //array is sorted
@@ -146,7 +164,7 @@ public class UtilityAIScript : MonoBehaviour {
     }
 
     //method for Relative Utility
-    void MakeDecisionRelative(float healthU, float reloadU, float anxietyU)
+    void MakeDecisionRelative(float healthU, float reloadU, float anxietyU, float attackU)
     {
         //list for storing utilities
         List<float> utilities = new List<float>();
@@ -154,6 +172,7 @@ public class UtilityAIScript : MonoBehaviour {
         float uHealToInt = healthU * 10;
         float uReloadToInt = reloadU * 10;
         float uAnxietyToInt = anxietyU * 10;
+        float uAttackToInt = attackU * 10;
 
         /*
         adds all the utilities to the list. The larger the utility
@@ -173,6 +192,12 @@ public class UtilityAIScript : MonoBehaviour {
         {
             utilities.Add(anxietyU);
         }
+
+        for (int i = 0; i < uAttackToInt; i++)
+        {
+            utilities.Add(attackU);
+        }
+
 
         for (int i = 0; i < utilities.Count;i++)
         {
@@ -201,6 +226,11 @@ public class UtilityAIScript : MonoBehaviour {
             Debug.Log("cover");
 
             movementScript.takeCover = true;
+        }
+        else if (utilities[randomIndex] == attackU)
+        {
+            Debug.Log("cover");
+            shootScript.attack = true;
         }
 
         //clears the list

@@ -46,18 +46,17 @@ public class Health : MonoBehaviour {
 
     public IEnumerator Heal()
     {
-        GetComponent<AudioSource>().PlayOneShot(healthSound);
         if (!healing)
         {
             if (healthKits > 0)
             {
                 health = maxHealth;
                 healthKits--;
+
+                GetComponent<AudioSource>().PlayOneShot(healthSound);
+                yield return new WaitForSeconds(healthSound.length);
+                healing = true;
             }
-
-            yield return new WaitForSeconds(healthSound.length);
-
-            healing = true;
         }
         healing = false;
     }

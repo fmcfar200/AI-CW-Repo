@@ -29,7 +29,7 @@ public class ShootScript : MonoBehaviour {
 
     float cooldownTime = 5.0f;
     public bool coolingDown = false;
-
+    public bool attack = false;
     float attackTimer = 5.0f;
 
     public AudioClip shotSound;
@@ -55,17 +55,19 @@ public class ShootScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if (npcMovementScript.hostile != false)
+        if (npcMovementScript.hostile != false )
         {
             if (!coolingDown)
             {
-                if (attackTimer > 0 && !reloading && !healthScript.healing)
+                if (attack == true && attackTimer > 0 && !reloading && !healthScript.healing)
                 {
+                    
                     Attack();
-
+                    
                 }
                 else
                 {
+                    attack = false;
                     coolingDown = true;
                     attackTimer = 5.0f;
                 }

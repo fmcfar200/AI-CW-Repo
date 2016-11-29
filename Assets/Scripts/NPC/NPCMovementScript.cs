@@ -106,7 +106,6 @@ public class NPCMovementScript : MonoBehaviour {
     }
     void Flee()
     {
-        float minimumDistance = 20.0f;
         Vector3 desiredVelocity = player.transform.position - transform.position;
         desiredVelocity = -desiredVelocity;
         desiredVelocity.y = 0;
