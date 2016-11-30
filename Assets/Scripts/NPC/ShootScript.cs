@@ -27,7 +27,7 @@ public class ShootScript : MonoBehaviour {
 
     public Text ammoText;
 
-    float cooldownTime = 5.0f;
+    float cooldownTime = 2.0f;
     public bool coolingDown = false;
     public bool attack = false;
     float attackTimer = 5.0f;
@@ -50,6 +50,8 @@ public class ShootScript : MonoBehaviour {
 
         //TEMP
         GetComponent<Rigidbody>().isKinematic = true;
+
+        coolingDown = true;
 	}
 	
 	// Update is called once per frame
@@ -79,7 +81,7 @@ public class ShootScript : MonoBehaviour {
                 if (cooldownTime <=0)
                 {
                     coolingDown = false;
-                    cooldownTime = 5.0f;
+                    cooldownTime = 2.0f;
                 }
             }
         }
