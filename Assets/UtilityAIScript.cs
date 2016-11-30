@@ -82,17 +82,10 @@ public class UtilityAIScript : MonoBehaviour {
     //calculates reload utility 
     void CalculateReload(int currentClip)
     { 
-        if (shootScript.currentAmmo != 0)
-        {
-            reloadU = (1 / (1 + Mathf.Pow(currentClip, 4.0f * 0.45f))) * 10;
-            reloadU = Mathf.Clamp(reloadU, 0.0f, 1.0f);
-            reloadTextObj.text = "Reload: " + reloadU.ToString("F1");
-        }
-        else
-        {
-            reloadU = 0;
-        }
-        
+       reloadU = (1 / (1 + Mathf.Pow(currentClip, 4.0f * 0.45f)))*10;
+       reloadU = Mathf.Clamp(reloadU, 0.0f, 1.0f);
+       reloadTextObj.text = "Reload: " + reloadU.ToString("F1");
+
     }
 
     //calculate health utility 
@@ -105,9 +98,9 @@ public class UtilityAIScript : MonoBehaviour {
     }
 
     //calculate cover utility
-    void CalculateCover(float distance,int currentHealth,int currentClip )
+    void CalculateCover(float distance, float healthU, float reloadU )
     {
-        coverU = (1 / (1 + Mathf.Pow(currentHealth*distance, 2.7f )))*10000;
+        coverU = (1 / (1 + Mathf.Pow(distance*healthU+reloadU, 2.7f )));
         coverU = Mathf.Clamp(coverU, 0.0f, 1.0f);
         coverTextObj.text = "TakeCover: " + coverU.ToString("F1");
 
@@ -127,9 +120,9 @@ public class UtilityAIScript : MonoBehaviour {
     //calculates all utilities
     void CalculateUtilities()
     {
-        CalculateCover(distance, currentHealth, currentClip);
         CalculateReload(currentClip);
         CalculateHealth(currentHealth);
+        CalculateCover(distance, healthU, reloadU);
         CalculateAttack(reloadU, healthU);
     }
 
