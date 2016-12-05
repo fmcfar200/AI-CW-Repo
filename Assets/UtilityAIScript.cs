@@ -63,7 +63,7 @@ public class UtilityAIScript : MonoBehaviour {
         CalculateUtilities();
         
         //if cooling down then make decision
-        if (shootScript.coolingDown)
+        if (shootScript.coolingDown && movementScript.hostile)
         {
             if (!makingDecision)
             {
@@ -81,11 +81,12 @@ public class UtilityAIScript : MonoBehaviour {
 
     //calculates reload utility 
     void CalculateReload(int currentClip)
-    { 
+    {
+        
        reloadU = (1 / (1 + Mathf.Pow(currentClip, 4.0f * 0.45f)))*10;
        reloadU = Mathf.Clamp(reloadU, 0.0f, 1.0f);
        reloadTextObj.text = "Reload: " + reloadU.ToString("F1");
-
+        
     }
 
     //calculate health utility 

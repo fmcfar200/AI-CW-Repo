@@ -7,6 +7,7 @@ public class PlayerShootScript : MonoBehaviour {
     public Texture2D crossHair;
     public GameObject bloodGush;
     RaycastHit hit;
+    public AudioClip shootClip;
 
     GameObject firedBullet;
 	// Use this for initialization
@@ -19,6 +20,7 @@ public class PlayerShootScript : MonoBehaviour {
 
         if (Input.GetButtonDown("Fire1"))
         {
+            GetComponent<AudioSource>().PlayOneShot(shootClip);
             Ray ray = Camera.main.ViewportPointToRay( new Vector3(0.5f, 0.5f, 0f));
             Physics.Raycast(ray, out hit);
             if (hit.collider.tag == "Enemy")

@@ -60,13 +60,17 @@ public class NPCMovementScript : MonoBehaviour {
                 }
                 else
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, foundCover,
-                             moveSpeed * Time.deltaTime);
+                    Vector3 desiredVelocity = foundCover - transform.position;
+                    desiredVelocity.y = 0;
+
+                    Vector3 movementVector = desiredVelocity.normalized * moveSpeed * Time.deltaTime;
+                    transform.position += movementVector;
+                    // transform.position = Vector3.MoveTowards(transform.position, foundCover,
+                    //        moveSpeed * Time.deltaTime);
                 }
 
                 if (transform.position == foundCover)
                 {
-                    transform.position = foundCover;
                     takingCover = true;
                     takeCover = false;
                     coverFound = false;
