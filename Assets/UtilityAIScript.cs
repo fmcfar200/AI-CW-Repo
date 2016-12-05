@@ -111,7 +111,6 @@ public class UtilityAIScript : MonoBehaviour {
     void CalculateAttack(float reload, float heal)
     {
         attackU = (1 / (1 + Mathf.Pow(reload + heal, 2.7f)));
-        Debug.Log(attackU.ToString());
         reloadU = Mathf.Clamp(reloadU, 0.0f, 1.0f);
         attackTextObj.text = "Attack: " + attackU.ToString("F1");
 
@@ -192,37 +191,26 @@ public class UtilityAIScript : MonoBehaviour {
         }
 
 
-        for (int i = 0; i < utilities.Count;i++)
-        {
-            Debug.Log(utilities[i]);
-        }
-
+       
         //random index is found
         int randomIndex = UnityEngine.Random.Range(0, utilities.Count);
 
         //if the random value in the list is equal to any of the utilies then it fires that action
         if (utilities[randomIndex] == healthU && healthScript.health != 100)
         {
-            Debug.Log("healing");
-
             StartCoroutine(healthScript.Heal());
         }
         else if (utilities[randomIndex] == reloadU && shootScript.currentAmmo != 0)
         {
-            Debug.Log("reloading");
-
             StartCoroutine(shootScript.Reload());
 
         }
         else if (utilities[randomIndex] == anxietyU)
         {
-            Debug.Log("cover");
-
             movementScript.takeCover = true;
         }
         else if (utilities[randomIndex] == attackU)
         {
-            Debug.Log("cover");
             shootScript.attack = true;
         }
 
