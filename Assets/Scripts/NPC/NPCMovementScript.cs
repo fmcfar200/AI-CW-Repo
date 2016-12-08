@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class NPCMovementScript : MonoBehaviour {
 
-    UtilityAIScript utilityAI;
     public GameObject player;
 
     public float moveSpeed = 5.0f;
@@ -26,29 +25,37 @@ public class NPCMovementScript : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-
+        
         hostile = false;
+
+        //finds player
         player = GameObject.FindGameObjectWithTag("Player");
         if (player == null)
         {
             Debug.LogError("PLAYER NOT FOUND!");
         }
 
-        utilityAI = GetComponent<UtilityAIScript>();
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        //displays distance
         distance = Vector3.Distance(player.transform.position, transform.position);
         distance = Mathf.RoundToInt(distance);
         distanceText.text = distance.ToString("F2");
+
+        if (distance < 20.0f && !hostile)
+        {
+            hostile = true;
+        }
         
 	
 	}
 
     void FixedUpdate()
     {
+        //finds cover 
         if (takeCover)
         {
             if (!takingCover)
@@ -82,7 +89,7 @@ public class NPCMovementScript : MonoBehaviour {
       
     }
 
-
+    //seeks and flees depending on distance to player
     public void SeekAndFlee()
     {
         takingCover = false;
@@ -99,6 +106,7 @@ public class NPCMovementScript : MonoBehaviour {
        
     }
 
+    //seek code
    void Seek()
    {
         Vector3 desiredVelocity = player.transform.position - transform.position;
@@ -108,6 +116,7 @@ public class NPCMovementScript : MonoBehaviour {
         transform.position += movementVector;
         
     }
+    //flee code
     void Flee()
     {
         Vector3 desiredVelocity = player.transform.position - transform.position;
@@ -118,6 +127,7 @@ public class NPCMovementScript : MonoBehaviour {
         
     }
 
+    //method for finding appropriate cover
     public Vector3 FindCover()
     {
         
@@ -158,6 +168,7 @@ public class NPCMovementScript : MonoBehaviour {
         
     }
 
+    //stays in cover and leaves after a certain amount of time
     IEnumerator StayAndLeave()
     {
         yield return new WaitForSeconds(5.0f);

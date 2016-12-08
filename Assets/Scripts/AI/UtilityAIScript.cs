@@ -197,7 +197,7 @@ public class UtilityAIScript : MonoBehaviour {
         int randomIndex = UnityEngine.Random.Range(0, utilities.Count);
 
         //if the random value in the list is equal to any of the utilies then it fires that action
-        if (utilities[randomIndex] == healthU && healthScript.health != 100)
+        if (utilities[randomIndex] == healthU && healthScript.health != 100 )
         {
             StartCoroutine(healthScript.Heal());
         }

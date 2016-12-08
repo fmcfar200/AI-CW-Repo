@@ -69,13 +69,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\GameManager.cs" />
-    <Compile Include="Assets\Scripts\BulletScript.cs" />
-    <Compile Include="Assets\Scripts\Health.cs" />
+    <Compile Include="Assets\Scripts\AI\UtilityAIScript.cs" />
+    <Compile Include="Assets\Scripts\NPC\Health.cs" />
     <Compile Include="Assets\Scripts\NPC\NPCMovementScript.cs" />
     <Compile Include="Assets\Scripts\NPC\ShootScript.cs" />
+    <Compile Include="Assets\Scripts\Other\BulletScript.cs" />
+    <Compile Include="Assets\Scripts\Other\GameManager.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerShootScript.cs" />
-    <Compile Include="Assets\UtilityAIScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />

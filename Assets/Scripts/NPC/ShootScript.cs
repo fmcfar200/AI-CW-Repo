@@ -4,42 +4,54 @@ using UnityEngine.UI;
 
 public class ShootScript : MonoBehaviour {
 
+    //scripts that will be accessed
     NPCMovementScript npcMovementScript;
-    UtilityAIScript utilityScript;
     Health healthScript;
 
+    //ammo/clip variables
     public int currentClip;
     public int currentAmmo;
-
+    //max ammo and clip
     public int maxClip = 16;
     int maxAmmo = 4;
+
+    //fire rate 
     float fireRate = 0.5f;
     float nextFire = 0.0f;
-    float bulletForce = 100.0f;
-    bool reloading = false;
-    public AudioClip reloadSound;
 
+    //force of bullet 
+    float bulletForce = 100.0f;
+
+    //reload bool
+    bool reloading = false;
+
+    //sounds
+    public AudioClip reloadSound;
+    public AudioClip shotSound;
+
+
+    //game objects
     public GameObject bulletPrefab;
     public GameObject bulletSpawn;
-    GameObject firedBullet;
     public GameObject emptyClip;
+    GameObject firedBullet;
     GameObject gun;
 
+    //UI
     public Text ammoText;
 
+    //Cooldown
     float cooldownTime = 2.0f;
     public bool coolingDown = false;
     public bool attack = false;
     float attackTimer = 5.0f;
 
-    public AudioClip shotSound;
 
 
 	// Use this for initialization
 	void Start ()
     {
         npcMovementScript = this.gameObject.GetComponent<NPCMovementScript>();
-        utilityScript = this.gameObject.GetComponent<UtilityAIScript>();
         healthScript = this.gameObject.GetComponent<Health>();
         gun = GameObject.FindGameObjectWithTag("Gun");
 
@@ -57,18 +69,22 @@ public class ShootScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        //code for attacking and cooling down when hostile
         if (npcMovementScript.hostile != false )
         {
+            //if cooling down
             if (!coolingDown)
             {
+                //if attacking is true and attack timer is active and not reloading and/or healing
                 if (attack == true && attackTimer > 0 && !reloading && !healthScript.healing)
                 {
-                    
+                    //initiate attack
                     Attack();
                     
                 }
                 else
                 {
+                    //reset
                     attack = false;
                     coolingDown = true;
                     attackTimer = 5.0f;
@@ -77,6 +93,7 @@ public class ShootScript : MonoBehaviour {
             }
             else
             {
+                //cooldown
                 cooldownTime -= Time.deltaTime;
                 if (cooldownTime <=0)
                 {
@@ -85,27 +102,30 @@ public class ShootScript : MonoBehaviour {
                 }
             }
         }
-
+        //ammo ui elements
         ammoText.text = "Enemy Ammo Count: " + currentClip.ToString() + "/" + currentAmmo.ToString();
         
+
 	
 	}
 
     void FixedUpdate()
     {
         
-
+        //applys force to fired bullet
         if (firedBullet != null)
         {
             firedBullet.GetComponent<BulletScript>().ApplyForce(this.gameObject, bulletForce);
         }
     }
 
+    //aims of player
     void AimAtPlayer()
     {
         gameObject.transform.LookAt(npcMovementScript.player.transform.position);
     }
 
+    //shooting code
     void Shoot()
     {
         GetComponent<AudioSource>().PlayOneShot(shotSound);
@@ -113,7 +133,7 @@ public class ShootScript : MonoBehaviour {
         firedBullet.name = "Bullet";
         currentClip--;
     }
-
+    //attacking code
     void Attack()
     {
         attackTimer -= Time.deltaTime;
@@ -128,7 +148,7 @@ public class ShootScript : MonoBehaviour {
         }
           
     }
-
+    //reload coroutine -- 
     public IEnumerator Reload()
     {
         if (!reloading)
@@ -150,7 +170,7 @@ public class ShootScript : MonoBehaviour {
         reloading = false;
     }
 
-
+    //attack timer reset
     public void ResetAttackTimer()
     {
         attackTimer = 0;

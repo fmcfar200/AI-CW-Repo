@@ -8,32 +8,18 @@ public class BulletScript : MonoBehaviour {
 
     Rigidbody rb;
     GameObject enemy;
-    int bulletDamage = 20;
+
 
     void Start()
     {
        rb = GetComponent<Rigidbody>();
-        enemy = GameObject.Find("Enemy");
+        //enemy = GameObject.Find("Enemy");
 
         StartCoroutine(LifeTime());
         
     }
-
-    void FixedUpdate()
-    {
-       
-    }
-
+    
     /*
-    void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.gameObject.tag == "Player")
-        {
-            Destroy(this.gameObject);
-        }
-    }
-    */
-
     void OnCollisionEnter(Collision coll)
     {
         if (coll.gameObject.tag == "Enemy")
@@ -42,6 +28,7 @@ public class BulletScript : MonoBehaviour {
             Destroy(this.gameObject);
         }
     }
+    */
     IEnumerator LifeTime()
     {
         yield return new WaitForSeconds(2.0f);

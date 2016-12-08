@@ -4,23 +4,25 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour {
 
-
+    // health and kits
     public int health;
     int maxHealth = 100;
     int healthKits = 3;
-
+    //ui vars
     public Text healthText;
     public Text healthKitText;
 
+    //healing bool
     public bool healing = false;
 
+    //audio
     public AudioClip healthSound;
 
 
 
 	// Use this for initialization
 	void Start () {
-
+        //health is set to max
         health = maxHealth;
 	
 	}
@@ -28,6 +30,7 @@ public class Health : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        //displays health
         healthText.text = "Health: " + health.ToString();
         healthKitText.text = "Health Kits: " + healthKits.ToString();
 
@@ -38,12 +41,12 @@ public class Health : MonoBehaviour {
 
         
 	}
-
+    //take damage method
     public void TakeDamage(int amount)
     {
         health -= amount;
     }
-
+    //heal coroutine
     public IEnumerator Heal()
     {
         if (!healing)

@@ -11,14 +11,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [Range(0f, 1f)] public float RunningStrideLengthen;
 
        // private CameraRefocus m_CameraRefocus;
-        private bool m_PreviouslyGrounded;
-        private Vector3 m_OriginalCameraPosition;
+       // private bool m_PreviouslyGrounded;
+        //private Vector3 m_OriginalCameraPosition;
 
 
         private void Start()
         {
 
-            m_OriginalCameraPosition = Camera.transform.localPosition;
+           // m_OriginalCameraPosition = Camera.transform.localPosition;
        //     m_CameraRefocus = new CameraRefocus(Camera, transform.root.transform, Camera.transform.localPosition);
         }
 
@@ -39,7 +39,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
            
 
-            m_PreviouslyGrounded = rigidbodyFirstPersonController.Grounded;
+            //m_PreviouslyGrounded = rigidbodyFirstPersonController.Grounded;
           //  m_CameraRefocus.SetFocusPoint();
         }
     }
