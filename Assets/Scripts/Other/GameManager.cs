@@ -18,47 +18,63 @@ public class GameManager : MonoBehaviour {
         {
             Debug.LogError("Player not found!!!!!!!");
         }
+
+       
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-	    if (Input.GetKeyDown(KeyCode.P))
+
+        if (Application.loadedLevelName == "Menu")
         {
-            if (!paused)
+            Cursor.visible = true;
+
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                paused = true;
+                Quit();
+            }
+        }
+
+        if (Application.loadedLevelName == "UtilityScene")
+        {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                if (!paused)
+                {
+                    paused = true;
+                }
+                else
+                {
+                    paused = false;
+                }
+            }
+
+            if (paused)
+            {
+                Time.timeScale = 0;
+                pausePanel.SetActive(true);
+                player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = false;
+                player.GetComponent<PlayerShootScript>().enabled = false;
+
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    ReloadScene();
+                }
+                else if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    ChangeScene("Menu");
+                }
+
             }
             else
             {
-                paused = false;
+                Time.timeScale = 1;
+                pausePanel.SetActive(false);
+                player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
+                player.GetComponent<PlayerShootScript>().enabled = true;
+
             }
-        }
-
-        if (paused)
-        {
-            Time.timeScale = 0;
-            pausePanel.SetActive(true);
-            player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = false;
-            player.GetComponent<PlayerShootScript>().enabled = false;
-
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                ReloadScene();
-            }
-            else if (Input.GetKeyDown(KeyCode.Q))
-            {
-                ChangeScene("Menu");
-            }
-
-        }
-        else
-        {
-            Time.timeScale = 1;
-            pausePanel.SetActive(false);
-            player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
-            player.GetComponent<PlayerShootScript>().enabled = true;
-
         }
     }
 
