@@ -43,7 +43,7 @@ public class NPCMovementScript : MonoBehaviour {
         //displays distance
         distance = Vector3.Distance(player.transform.position, transform.position);
         distance = Mathf.RoundToInt(distance);
-        distanceText.text = distance.ToString("F2");
+        distanceText.text = "Distance: " + distance.ToString("F2");
 
         if (distance < 20.0f && !hostile)
         {
