@@ -1,0 +1,50 @@
+Initialize engine version: 5.4.1f1 (649f48bbbf0f)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: AMD Radeon HD 6670 (ID=0x6758)
+    Vendor:   ATI
+    VRAM:     2034 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Fraser\Documents\Uni\Year3\AI\AI CW\Final Build\FraserMcFarlaneUtilityAIDemo_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Fraser\Documents\Uni\Year3\AI\AI CW\Final Build\FraserMcFarlaneUtilityAIDemo_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Fraser\Documents\Uni\Year3\AI\AI CW\Final Build\FraserMcFarlaneUtilityAIDemo_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\Fraser\Documents\Uni\Year3\AI\AI CW\Final Build\FraserMcFarlaneUtilityAIDemo_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\Fraser\Documents\Uni\Year3\AI\AI CW\Final Build\FraserMcFarlaneUtilityAIDemo_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Fraser\Documents\Uni\Year3\AI\AI CW\Final Build\FraserMcFarlaneUtilityAIDemo_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Fraser\Documents\Uni\Year3\AI\AI CW\Final Build\FraserMcFarlaneUtilityAIDemo_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Fraser\Documents\Uni\Year3\AI\AI CW\Final Build\FraserMcFarlaneUtilityAIDemo_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Fraser\Documents\Uni\Year3\AI\AI CW\Final Build\FraserMcFarlaneUtilityAIDemo_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Fraser\Documents\Uni\Year3\AI\AI CW\Final Build\FraserMcFarlaneUtilityAIDemo_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.089 seconds
+Platform assembly: C:\Users\Fraser\Documents\Uni\Year3\AI\AI CW\Final Build\FraserMcFarlaneUtilityAIDemo_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Fraser\Documents\Uni\Year3\AI\AI CW\Final Build\FraserMcFarlaneUtilityAIDemo_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 1.047625 ms
+NullReferenceException: Object reference not set to an instance of an object
+  at GameManager.Start () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: 1478 -> priority: 1 
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 7.082515 ms
+
+Unloading 7 unused Assets to reduce memory usage. Loaded Objects now: 615.
+Total: 0.340903 ms (FindLiveObjects: 0.028031 ms CreateObjectMapping: 0.030862 ms MarkObjects: 0.268701 ms  DeleteObjects: 0.012458 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 1.624952 ms
+
+Unloading 80 unused Assets to reduce memory usage. Loaded Objects now: 246.
+Total: 1.721220 ms (FindLiveObjects: 0.044736 ms CreateObjectMapping: 0.052947 ms MarkObjects: 0.529758 ms  DeleteObjects: 1.092645 ms)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at GameManager.Start () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
