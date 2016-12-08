@@ -69,12 +69,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\GameManager.cs" />
     <Compile Include="Assets\Scripts\BulletScript.cs" />
     <Compile Include="Assets\Scripts\Health.cs" />
     <Compile Include="Assets\Scripts\NPC\NPCMovementScript.cs" />
     <Compile Include="Assets\Scripts\NPC\ShootScript.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerShootScript.cs" />
-    <Compile Include="Assets\SpawnEnemy.cs" />
     <Compile Include="Assets\UtilityAIScript.cs" />
   </ItemGroup>
   <ItemGroup>
